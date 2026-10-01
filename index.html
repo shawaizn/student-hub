@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Year 12 Advice Hub</title>
+  <meta name="description" content="Advice, revision tips, exam advice and resources from Year 13 students, for Year 12.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>">
+</head>
+<body>
+  <div id="demo-banner" class="demo-banner" hidden>
+    Demo mode — posts are only saved in this browser. Contributor password: <b>year13</b> · Admin password: <b>admin</b>
+  </div>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a href="#/" class="brand">
+        <span class="brand-mark">💬</span>
+        <span class="brand-text">
+          <span class="brand-school" data-school></span>
+          <span class="brand-name" data-site-name></span>
+        </span>
+      </a>
+      <div class="header-actions">
+        <button class="btn btn-ghost" id="admin-btn" type="button" title="Admin">🔒 <span class="hide-sm">Admin</span></button>
+        <button class="btn btn-primary" id="add-btn" type="button">＋ <span>Add<span class="hide-sm"> advice</span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div id="admin-bar" class="admin-bar" hidden>
+    <div class="wrap admin-bar-inner">
+      <span>🛠️ <b>Admin mode</b> — you can edit, move, pin and delete posts.</span>
+      <button class="btn btn-small" id="admin-logout" type="button">Exit admin</button>
+    </div>
+  </div>
+
+  <main id="app" class="wrap" aria-live="polite"></main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      Made by Year 13, for Year 12 💛 · <span data-school></span> Sixth Form
+    </div>
+  </footer>
+
+  <!-- Add / edit post dialog -->
+  <dialog id="post-dialog" class="dialog">
+    <form id="post-form" method="dialog" novalidate>
+      <div class="dialog-head">
+        <h2 id="post-dialog-title">Share your advice</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Close">✕</button>
+      </div>
+      <p class="dialog-sub" id="post-dialog-sub">Thanks for helping out! Your post will appear on the site straight away.</p>
+
+      <div class="field-row">
+        <label class="field">
+          <span>Subject</span>
+          <select name="subject" required></select>
+        </label>
+        <label class="field">
+          <span>Name <em>(optional)</em></span>
+          <input name="author" maxlength="60" placeholder="e.g. Sarah, Y13">
+        </label>
+      </div>
+
+      <fieldset class="field">
+        <legend>What kind of post is it?</legend>
+        <div class="type-picker" id="type-picker"></div>
+      </fieldset>
+
+      <label class="field">
+        <span>Title</span>
+        <input name="title" required minlength="3" maxlength="120" placeholder="e.g. Start past papers by Christmas">
+      </label>
+
+      <label class="field">
+        <span>Your advice</span>
+        <textarea name="body" rows="6" maxlength="4000" placeholder="What do you wish you'd known in Year 12?"></textarea>
+        <small class="counter"><span data-count>0</span>/4000</small>
+      </label>
+
+      <label class="field">
+        <span>Link <em>(optional)</em></span>
+        <input name="link" type="url" maxlength="500" placeholder="https://…">
+      </label>
+
+      <label class="field" id="pinned-field" hidden>
+        <span class="check"><input type="checkbox" name="pinned"> 📌 Pin to top of subject</span>
+      </label>
+
+      <label class="field" id="password-field">
+        <span>Year 13 password</span>
+        <input name="password" type="password" autocomplete="current-password" placeholder="Ask your sixth form team">
+      </label>
+
+      <p class="form-error" id="post-error" role="alert" hidden></p>
+
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary" id="post-submit">Post advice</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Admin login dialog -->
+  <dialog id="admin-dialog" class="dialog dialog-small">
+    <form id="admin-form" method="dialog" novalidate>
+      <div class="dialog-head">
+        <h2>Admin login</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Close">✕</button>
+      </div>
+      <label class="field">
+        <span>Admin password</span>
+        <input name="password" type="password" autocomplete="current-password" required>
+      </label>
+      <p class="form-error" id="admin-error" role="alert" hidden></p>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Log in</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/subjects.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
