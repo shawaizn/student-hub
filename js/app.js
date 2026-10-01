@@ -38,6 +38,9 @@
 
   // ---------- branding ----------
   document.documentElement.style.setProperty("--brand", cfg.brandColor);
+  if (cfg.accentColor) document.documentElement.style.setProperty("--accent-brand", cfg.accentColor);
+  $$("[data-school-full]").forEach((el) => (el.textContent = cfg.schoolFullName || cfg.schoolName));
+  $$("[data-motto]").forEach((el) => (el.textContent = cfg.motto || ""));
   $$("[data-school]").forEach((el) => (el.textContent = cfg.schoolName));
   $$("[data-site-name]").forEach((el) => (el.textContent = cfg.siteName));
   document.title = cfg.siteName + " · " + cfg.schoolName;
@@ -149,7 +152,7 @@
     app.innerHTML = `
       <section class="hero">
         <div class="hero-text">
-          <p class="eyebrow">${esc(cfg.schoolName)} Sixth Form</p>
+          <p class="eyebrow">${esc(cfg.schoolName)} Sixth Form${cfg.motto ? ` <span class="eyebrow-motto">${esc(cfg.motto)}</span>` : ""}</p>
           <h1>Advice from the people who've <span class="hl">just done it</span>.</h1>
           <p class="lead">${esc(cfg.tagline)} Pick your subject, or start with the General section.</p>
           <form class="search" id="search-form" role="search">

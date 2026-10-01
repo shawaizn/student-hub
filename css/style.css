@@ -3,15 +3,16 @@
    The main colour comes from brandColor in js/config.js
    ===================================================================== */
 :root {
-  --brand: #4b2e83;
+  --brand: #00807e;          /* deep school teal (behind white text) */
+  --accent-brand: #00b1af;   /* exact logo teal */
   --brand-soft: color-mix(in srgb, var(--brand) 10%, white);
   --brand-mid: color-mix(in srgb, var(--brand) 22%, white);
-  --bg: #fbf8f3;
+  --bg: #f7faf9;
   --surface: #ffffff;
   --ink: #1f1b2d;
   --ink-2: #5b5670;
   --ink-3: #8b869c;
-  --line: #ece7df;
+  --line: #e3ebe9;
   --sun: #fde68a;
   --danger: #dc2626;
   --radius: 18px;
@@ -33,6 +34,7 @@ body {
 }
 a { color: var(--brand); }
 h1, h2, h3 { line-height: 1.2; margin: 0; }
+h1, .brand-name, .section-title, .group-title, .dialog-head h2 { font-family: "Jost", "Nunito", system-ui, sans-serif; font-weight: 700 !important; letter-spacing: -.005em; }
 button, input, select, textarea { font: inherit; color: inherit; }
 [hidden] { display: none !important; }
 .wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 16px; }
@@ -54,11 +56,12 @@ main.wrap { flex: 1; padding-top: 24px; padding-bottom: 56px; }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 68px; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); min-width: 0; }
 .brand-mark {
-  width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center; font-size: 22px;
-  background: var(--brand); box-shadow: 0 4px 12px color-mix(in srgb, var(--brand) 35%, transparent); flex: none;
+  width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; flex: none;
+  background: #fff; border: 1.5px solid var(--line); box-shadow: 0 4px 12px color-mix(in srgb, var(--brand) 18%, transparent);
 }
+.brand-mark img { width: 30px; height: auto; }
 .brand-text { display: flex; flex-direction: column; min-width: 0; }
-.brand-school { font-size: 12px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; }
+.brand-school { font-size: 12px; font-weight: 800; color: var(--accent-brand); text-transform: uppercase; letter-spacing: .06em; }
 .brand-name { font-weight: 900; font-size: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .header-actions { display: flex; gap: 8px; flex: none; }
 
@@ -87,7 +90,7 @@ main.wrap { flex: 1; padding-top: 24px; padding-bottom: 56px; }
 /* ---------- hero ---------- */
 .hero {
   position: relative; overflow: hidden;
-  background: var(--brand); color: #fff; border-radius: 28px;
+  background: linear-gradient(135deg, #006b69 0%, var(--brand) 55%, #009896 100%); color: #fff; border-radius: 28px;
   padding: 44px 40px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 32px; align-items: center;
 }
 .hero::before, .hero::after {
@@ -95,11 +98,16 @@ main.wrap { flex: 1; padding-top: 24px; padding-bottom: 56px; }
   background: rgba(255,255,255,.08);
 }
 .hero::before { width: 380px; height: 380px; right: -120px; top: -160px; }
-.hero::after { width: 220px; height: 220px; right: 180px; bottom: -140px; background: rgba(253,230,138,.18); }
+.hero::after {
+  width: 300px; height: 360px; left: -60px; bottom: -110px; border-radius: 0;
+  background: url("../assets/crest-white.png") no-repeat center / contain; opacity: .07;
+}
+.eyebrow-motto::before { content: "· "; }
+.eyebrow-motto { text-transform: none; letter-spacing: .01em; font-style: italic; font-weight: 700; }
 .hero-text, .hero-stats { position: relative; z-index: 1; }
 .eyebrow { margin: 0 0 8px; font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .8; }
 .hero h1 { font-size: clamp(30px, 4.4vw, 46px); font-weight: 900; letter-spacing: -.01em; }
-.hl { background: linear-gradient(transparent 62%, rgba(253,230,138,.55) 0); padding: 0 2px; }
+.hl { background: linear-gradient(transparent 86%, #fde68a 0); padding: 0 2px; }
 .lead { font-size: 18px; margin: 14px 0 0; opacity: .92; max-width: 560px; }
 .hero-stats { display: grid; gap: 12px; }
 .stat { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.18); border-radius: 16px; padding: 14px 18px; display: flex; align-items: baseline; gap: 10px; }
@@ -119,7 +127,7 @@ main.wrap { flex: 1; padding-top: 24px; padding-bottom: 56px; }
 
 /* ---------- subject groups ---------- */
 .groups { margin-top: 40px; display: grid; gap: 32px; }
-.group-title { font-size: 20px; font-weight: 900; display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.group-title { font-size: 21px; font-weight: 900; display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
 .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
 .subject-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
 .subject-grid-big { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
@@ -281,7 +289,11 @@ main.wrap { flex: 1; padding-top: 24px; padding-bottom: 56px; }
   box-shadow: var(--shadow-lg); max-width: calc(100vw - 32px); text-align: center;
 }
 
-.site-footer { border-top: 1px solid var(--line); padding: 22px 0; color: var(--ink-3); font-size: 14px; font-weight: 700; text-align: center; }
+.site-footer { border-top: 1px solid var(--line); padding: 26px 0 30px; color: var(--ink-3); font-size: 14px; font-weight: 700; text-align: center; background: #fff; }
+.site-footer .wrap { display: grid; justify-items: center; gap: 4px; }
+.site-footer b { color: var(--brand); }
+.site-footer em { color: var(--accent-brand); }
+.footer-crest { width: 34px; height: auto; margin-bottom: 6px; }
 
 /* ---------- small screens ---------- */
 @media (max-width: 760px) {
@@ -306,5 +318,8 @@ main.wrap { flex: 1; padding-top: 24px; padding-bottom: 56px; }
   .brand-name { font-size: 16px; }
   .brand-school { font-size: 11px; }
   .header-actions .btn { padding: 9px 13px; }
-  .brand-mark { width: 38px; height: 38px; font-size: 20px; }
+  .brand-mark { width: 40px; height: 40px; }
+  .brand-mark img { width: 27px; }
+  .eyebrow-motto { display: block; margin-top: 2px; }
+  .eyebrow-motto::before { content: none; }
 }
