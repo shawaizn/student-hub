@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Year 12 Advice Hub</title>
-  <meta name="description" content="Advice, revision tips, exam advice and resources from Year 13 students, for Year 12.">
+  <title>Student Advice Hub</title>
+  <meta name="description" content="Advice, revision tips, exam advice and resources from older students, for every year group.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
 </head>
 <body>
   <div id="demo-banner" class="demo-banner" hidden>
-    Demo mode — posts are only saved in this browser. Contributor password: <b>year13</b> · Admin password: <b>admin</b>
+    Demo mode — posts are only saved in this browser. Passwords: <b>year8</b> … <b>year13</b> · Admin: <b>admin</b>
   </div>
 
   <header class="site-header">
@@ -34,8 +34,11 @@
 
   <div id="admin-bar" class="admin-bar" hidden>
     <div class="wrap admin-bar-inner">
-      <span>🛠️ <b>Admin mode</b> — you can edit, move, pin and delete posts.</span>
-      <button class="btn btn-small" id="admin-logout" type="button">Exit admin</button>
+      <span>🛠️ <b>Admin mode</b><span class="hide-sm"> — approve, edit, move, pin and delete posts</span></span>
+      <span class="admin-bar-actions">
+        <a class="btn btn-small btn-queue" href="#/admin">📥 Approval queue <b id="queue-count">0</b></a>
+        <button class="btn btn-small" id="admin-logout" type="button">Exit</button>
+      </span>
     </div>
   </div>
 
@@ -44,8 +47,8 @@
   <footer class="site-footer">
     <div class="wrap">
       <img class="footer-crest" src="assets/crest.png" alt="" width="105" height="127">
-      <div><b data-school-full></b> Sixth Form · <em data-motto></em></div>
-      <div>Made by Year 13, for Year 12 💛</div>
+      <div><b data-school-full></b> · <em data-motto></em></div>
+      <div>Made by students, for students 💛</div>
     </div>
   </footer>
 
@@ -56,16 +59,20 @@
         <h2 id="post-dialog-title">Share your advice</h2>
         <button type="button" class="icon-btn" data-close aria-label="Close">✕</button>
       </div>
-      <p class="dialog-sub" id="post-dialog-sub">Thanks for helping out! Your post will appear on the site straight away.</p>
+      <p class="dialog-sub" id="post-dialog-sub"></p>
 
-      <div class="field-row">
+      <div class="field-row field-row-3">
+        <label class="field" id="author-year-field">
+          <span>I'm in</span>
+          <select name="authorYear" required></select>
+        </label>
+        <label class="field">
+          <span>Advice for</span>
+          <select name="audienceYear" required></select>
+        </label>
         <label class="field">
           <span>Subject</span>
           <select name="subject" required></select>
-        </label>
-        <label class="field">
-          <span>Name <em>(optional)</em></span>
-          <input name="author" maxlength="60" placeholder="e.g. Sarah, Y13">
         </label>
       </div>
 
@@ -81,7 +88,7 @@
 
       <label class="field">
         <span>Your advice</span>
-        <textarea name="body" rows="6" maxlength="4000" placeholder="What do you wish you'd known in Year 12?"></textarea>
+        <textarea name="body" rows="6" maxlength="4000" placeholder="What do you wish you'd known when you were in their year?"></textarea>
         <small class="counter"><span data-count>0</span>/4000</small>
       </label>
 
@@ -95,10 +102,11 @@
       </label>
 
       <label class="field" id="password-field">
-        <span>Year 13 password</span>
-        <input name="password" type="password" autocomplete="current-password" placeholder="Ask your sixth form team">
+        <span id="password-label">Year password</span>
+        <input name="password" type="password" autocomplete="current-password" placeholder="Ask your form tutor or head of year">
       </label>
 
+      <p class="form-note" id="post-note" hidden></p>
       <p class="form-error" id="post-error" role="alert" hidden></p>
 
       <div class="dialog-actions">

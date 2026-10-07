@@ -295,6 +295,83 @@ main.wrap { flex: 1; padding-top: 24px; padding-bottom: 56px; }
 .site-footer em { color: var(--accent-brand); }
 .footer-crest { width: 34px; height: auto; margin-bottom: 6px; }
 
+/* ---------- years ---------- */
+.years { margin-top: 36px; }
+.year-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 14px; }
+.year-card {
+  display: flex; align-items: center; gap: 16px; text-decoration: none; color: var(--ink);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--yc) 10%, white), #fff 65%);
+  border: 1.5px solid color-mix(in srgb, var(--yc) 22%, white); border-radius: 22px; padding: 18px;
+  transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+}
+.year-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--yc) 55%, white); }
+.year-badge {
+  width: 70px; height: 70px; flex: none; border-radius: 20px; display: grid; place-content: center; text-align: center;
+  background: var(--yc); color: #fff; font-family: "Jost", "Nunito", sans-serif; font-weight: 700; font-size: 32px; line-height: 1;
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--yc) 35%, transparent);
+}
+.year-badge small { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; font-family: "Nunito", sans-serif; font-weight: 800; opacity: .9; margin-bottom: 2px; }
+.year-badge-lg { width: 92px; height: 92px; font-size: 42px; border-radius: 26px; }
+.year-info { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.year-stage { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: color-mix(in srgb, var(--yc) 70%, black); }
+.year-blurb { font-weight: 700; margin-top: 2px; }
+.year-count { font-size: 13px; color: var(--ink-3); font-weight: 700; margin-top: 4px; }
+.year-arrow { font-size: 22px; color: color-mix(in srgb, var(--yc) 70%, black); font-weight: 900; transition: transform .14s ease; }
+.year-card:hover .year-arrow { transform: translateX(3px); }
+
+.year-hero {
+  display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--yc) 16%, white), #fff 75%);
+  border: 1.5px solid color-mix(in srgb, var(--yc) 28%, white); border-radius: 24px; padding: 28px;
+}
+.year-hero > div { flex: 1; min-width: 220px; }
+.year-hero h1 { font-size: clamp(28px, 4vw, 40px); }
+.year-hero .eyebrow { color: var(--ink-2); }
+.year-hero .lead { color: var(--ink-2); font-size: 16px; margin-top: 6px; }
+.year-switch { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0 0; }
+.year-switch .pill.is-on { background: var(--yc); border-color: var(--yc); color: #fff; }
+.highlights-tight { margin-top: 28px; }
+.crumbs span { color: var(--ink-3); margin: 0 4px; }
+
+.chip-year { background: color-mix(in srgb, var(--yc) 16%, white); color: color-mix(in srgb, var(--yc) 60%, black); }
+.chip-year:hover { text-decoration: underline; }
+.chip-flag { background: #fee2e2; color: #9f1239; }
+.chip-wait { background: #e0f2fe; color: #075985; }
+.avatar { background: color-mix(in srgb, var(--yc, var(--accent)) 22%, white); font-size: 10px; width: 30px; height: 30px; }
+.post-actions { display: flex; align-items: center; gap: 6px; }
+.report-btn {
+  border: 1.5px solid transparent; background: transparent; border-radius: 999px; width: 34px; height: 34px;
+  cursor: pointer; font-size: 14px; opacity: .45; transition: all .12s ease; filter: grayscale(1);
+}
+.report-btn:hover { opacity: 1; filter: none; border-color: #fecaca; background: #fef2f2; }
+.report-btn.is-on { opacity: .9; filter: none; cursor: default; }
+.post.is-queued { border-top-color: #38bdf8; }
+.btn-approve { color: #166534; border-color: #bbf7d0; background: #f0fdf4; }
+
+/* how it works */
+.how { margin-top: 44px; }
+.how-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.how-step { background: #fff; border: 1.5px solid var(--line); border-radius: var(--radius); padding: 16px; color: var(--ink-2); font-size: 15px; }
+.how-step span { display: block; font-size: 26px; margin-bottom: 6px; }
+.how-step b { color: var(--ink); }
+
+/* admin */
+.admin-bar-actions { display: flex; gap: 8px; align-items: center; }
+.btn-queue b { background: rgba(255,255,255,.2); border-radius: 999px; padding: 0 7px; min-width: 22px; }
+.btn-queue.has-items { background: #fde68a !important; color: #1f1b2d !important; }
+.btn-queue.has-items b { background: #1f1b2d; color: #fff; }
+.admin-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+.admin-head h1 { font-size: 34px; }
+.admin-head .lead { color: var(--ink-2); font-size: 16px; }
+.queue-section { margin-top: 28px; }
+.queue-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; max-width: 780px; }
+.count-pill { display: inline-grid; place-items: center; min-width: 30px; height: 26px; padding: 0 8px; border-radius: 999px; background: var(--brand); color: #fff; font-size: 14px; vertical-align: middle; font-family: "Nunito", sans-serif; }
+.all-clear { background: #fff; border: 1.5px dashed var(--line); border-radius: var(--radius); padding: 18px; font-weight: 700; }
+
+/* form extras */
+.field-row-3 { grid-template-columns: 1fr 1fr 1.4fr; }
+.form-note { margin: 0; background: var(--brand-soft); color: var(--brand); border-radius: 10px; padding: 10px 12px; font-weight: 700; font-size: 14px; }
+
 /* ---------- small screens ---------- */
 @media (max-width: 760px) {
   .hero { grid-template-columns: 1fr; padding: 30px 22px; border-radius: 22px; gap: 22px; }
@@ -312,10 +389,16 @@ main.wrap { flex: 1; padding-top: 24px; padding-bottom: 56px; }
   .subject-hero { padding: 20px; }
   .subject-hero-emoji { width: 58px; height: 58px; font-size: 30px; }
   .subject-hero-add { width: 100%; }
-  .field-row { grid-template-columns: 1fr; }
+  .field-row, .field-row-3 { grid-template-columns: 1fr; }
+  .year-grid { grid-template-columns: 1fr; }
+  .year-card { padding: 14px; gap: 12px; }
+  .year-badge { width: 60px; height: 60px; font-size: 28px; }
+  .year-hero { padding: 20px; }
+  .year-hero-add { width: 100%; }
+  .admin-bar-inner { font-size: 13px; }
   .dialog form { padding: 18px; }
   .hide-sm { display: none; }
-  .brand-name { font-size: 16px; }
+  .brand-name { font-size: 15px; }
   .brand-school { font-size: 11px; }
   .header-actions .btn { padding: 9px 13px; }
   .brand-mark { width: 40px; height: 40px; }
