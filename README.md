@@ -1,9 +1,9 @@
 # Student Advice Hub 💬
 
-A website for Colton Hills Community School where older students leave advice, revision tips, exam advice, resources and useful links for younger years. Advice is organised **by year (7–12)**, then **by subject**, and each year also has a General section.
+A website for Colton Hills Community School where older students leave advice, revision tips, exam advice, resources and useful links for younger years. Advice is organised **by year (7–13)**, then **by subject**, and each year also has a General section.
 
 - **Anyone** can read posts and press 👍 **Helpful**. The most helpful posts rise to the top.
-- **Students in Years 8–13** can post advice for any **younger** year using their year's password. Posts are anonymous and show as "A Year 10 student".
+- **Students in Years 8–13** can post advice for any **younger** year using their year's password. **Leaving Year 13s** can also post for next year's Year 13. Posts are anonymous and show as "A Year 10 student".
 - **Posts from Years 12–13** go live straight away. **Posts from Years 8–11** wait in the admin **approval queue**.
 - **A bad-word filter** blocks swearing and slurs before a post is sent.
 - **🚩 Report:** if 3 people report a post, it's hidden automatically and moved to the queue.

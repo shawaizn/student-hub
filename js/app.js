@@ -218,7 +218,7 @@
         <div class="how-grid">
           <div class="how-step"><span>📖</span><b>Read</b> advice for your year, by subject or in General.</div>
           <div class="how-step"><span>👍</span><b>Vote</b> for the advice that helped you most, so the best rises to the top.</div>
-          <div class="how-step"><span>✍️</span><b>Share</b> advice with any younger year using your year's password.</div>
+          <div class="how-step"><span>✍️</span><b>Share</b> advice with any younger year using your year's password. Leaving Year 13s can post for next year's Year 13.</div>
           <div class="how-step"><span>🚩</span><b>Report</b> anything that isn't OK. It gets hidden and checked.</div>
         </div>
       </section>
@@ -564,7 +564,8 @@
   let editing = null;
 
   function fillAudience(authorYear, wanted) {
-    const options = YEARS.map((y) => y.year).filter((y) => editing || !authorYear || y < authorYear);
+    // Younger years only, except Year 13s can also leave advice for next year's Year 13
+    const options = YEARS.map((y) => y.year).filter((y) => editing || !authorYear || y < authorYear || (authorYear === 13 && y === 13));
     f.audienceYear.innerHTML = `<option value="" disabled>For year…</option>` +
       options.map((y) => `<option value="${y}">Year ${y}</option>`).join("");
     const pick = options.includes(wanted) ? wanted : options.includes(Number(f.audienceYear.dataset.last)) ? Number(f.audienceYear.dataset.last) : options[options.length - 1];

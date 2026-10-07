@@ -84,6 +84,8 @@
         "The biggest jump from GCSE is how much free time you get. Lock in 2–3 frees a week for study in the library.", 19, 2),
       s(12, 13, "maths", "revision", "Do every past paper on Physics & Maths Tutor",
         "Timed conditions, mark it yourself, and redo the questions you got wrong a week later.", 14, 7, "https://www.physicsandmathstutor.com/"),
+      s(13, 13, "results-leaving", "advice", "Have a plan B before results day",
+        "Know what you'd do through Clearing before the day. Have your UCAS login and phone charged, and don't panic, loads of people end up somewhere great.", 11, 3),
       s(8, 9, "general", "advice", "Waiting for approval example",
         "This post is from Year 9, so it waits in the admin approval queue.", 0, 0, null, { status: "pending" }),
     ];
@@ -106,7 +108,7 @@
     listPosts: async () => delay(demoPosts().filter((p) => p.status === "approved")),
     checkPassword: async (role, pw) => delay(checkPw(role, pw)),
     submitPost: async (pw, p) => {
-      if (p.audienceYear >= p.authorYear) throw new Error("You can only post advice for younger years");
+      if (p.audienceYear >= p.authorYear && !(p.authorYear === 13 && p.audienceYear === 13)) throw new Error("You can only post advice for younger years");
       const isAdmin = checkPw("admin", pw);
       if (!isAdmin && !checkPw("year" + p.authorYear, pw)) throw new Error("Wrong password for Year " + p.authorYear);
       if (hasBadWords(p.title, p.body, p.link)) throw new Error(BAD_WORDS_MSG);

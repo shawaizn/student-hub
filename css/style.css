@@ -298,6 +298,11 @@ main.wrap { flex: 1; padding-top: 24px; padding-bottom: 56px; }
 /* ---------- years ---------- */
 .years { margin-top: 36px; }
 .year-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 14px; }
+/* 7 years in rows of 3: the last card (Year 13) stretches across so the grid ends neatly */
+@media (min-width: 1060px) {
+  .year-grid { grid-template-columns: repeat(3, 1fr); }
+  .year-card:last-child:nth-child(3n + 1) { grid-column: 1 / -1; }
+}
 .year-card {
   display: flex; align-items: center; gap: 16px; text-decoration: none; color: var(--ink);
   background: linear-gradient(135deg, color-mix(in srgb, var(--yc) 10%, white), #fff 65%);

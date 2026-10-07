@@ -126,9 +126,13 @@ window.YEARS = [
              { id: "post-16", name: "Sixth Form & College", emoji: "🎓", blurb: "Choosing A-levels, BTECs, college or apprenticeships" }] },
   { year: 12, stage: "post16", color: "#10b981", blurb: "A-levels, BTECs, independent study and UCAS",
     extras: [{ id: "ucas", name: "UCAS & Next Steps", emoji: "🎓", blurb: "Personal statements, uni choices, apprenticeships" }] },
+  { year: 13, stage: "post16", color: "#6366f1", blurb: "Final exams, applications, results day and what comes next. From last year's Year 13s",
+    extras: [{ id: "applications", name: "Applications & Offers", emoji: "📨", blurb: "UCAS deadlines, interviews, apprenticeships, student finance" },
+             { id: "results-leaving", name: "Results Day & Leaving", emoji: "🎉", blurb: "Clearing, results day, gap years, moving on" }] },
 ];
 
 // Years that can post advice (each has its own password).
+// Students post for younger years; Year 13s can also post for next year's Year 13.
 window.POSTING_YEARS = [8, 9, 10, 11, 12, 13];
 // Posts from these years go live straight away; younger years wait for admin approval.
 // (The real rule lives in the database — this is only used for messages on the page.)
