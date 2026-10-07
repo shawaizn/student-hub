@@ -2,136 +2,100 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Student Advice Hub</title>
-  <meta name="description" content="Advice, revision tips, exam advice and resources from older students, for every year group.">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Student Advice</title>
+  <meta name="description" content="Tips from older students, for every year group.">
+  <meta name="theme-color" content="#00807e">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="assets/crest.png">
 </head>
 <body>
-  <div id="demo-banner" class="demo-banner" hidden>
-    Demo mode — posts are only saved in this browser. Passwords: <b>year8</b> … <b>year13</b> · Admin: <b>admin</b>
-  </div>
+  <div id="demo-banner" class="demo-banner" hidden>Demo · passwords <b>year8</b>…<b>year13</b> · admin <b>admin</b></div>
 
-  <header class="site-header">
-    <div class="wrap header-inner">
-      <a href="#/" class="brand">
-        <span class="brand-mark"><img src="assets/crest.png" alt="" width="105" height="127"></span>
-        <span class="brand-text">
-          <span class="brand-school" data-school></span>
-          <span class="brand-name" data-site-name></span>
-        </span>
+  <header class="top">
+    <div class="wrap top-inner">
+      <a href="#/" class="brand" aria-label="Home">
+        <img src="assets/crest.png" alt="" width="105" height="127">
+        <span data-site-name></span>
       </a>
-      <div class="header-actions">
-        <button class="btn btn-ghost" id="admin-btn" type="button" title="Admin">🔒 <span class="hide-sm">Admin</span></button>
-        <button class="btn btn-primary" id="add-btn" type="button">＋ <span>Add<span class="hide-sm"> advice</span></span></button>
-      </div>
+      <a href="#/admin" id="queue-btn" class="queue-btn" hidden aria-label="Posts to check">📥 <b id="queue-count">0</b></a>
+      <button class="add-btn" id="add-btn" type="button" aria-label="Add a tip">＋</button>
     </div>
   </header>
 
-  <div id="admin-bar" class="admin-bar" hidden>
-    <div class="wrap admin-bar-inner">
-      <span>🛠️ <b>Admin mode</b><span class="hide-sm"> — approve, edit, move, pin and delete posts</span></span>
-      <span class="admin-bar-actions">
-        <a class="btn btn-small btn-queue" href="#/admin">📥 Approval queue <b id="queue-count">0</b></a>
-        <button class="btn btn-small" id="admin-logout" type="button">Exit</button>
-      </span>
-    </div>
-  </div>
-
   <main id="app" class="wrap" aria-live="polite"></main>
 
-  <footer class="site-footer">
+  <footer class="foot">
     <div class="wrap">
-      <img class="footer-crest" src="assets/crest.png" alt="" width="105" height="127">
-      <div><b data-school-full></b> · <em data-motto></em></div>
-      <div>Made by students, for students 💛</div>
+      <span data-school-full></span>
+      <button type="button" class="link-btn" id="admin-btn">Admin</button>
     </div>
   </footer>
 
-  <!-- Add / edit post dialog -->
-  <dialog id="post-dialog" class="dialog">
+  <!-- Add / edit a tip -->
+  <dialog id="post-dialog" class="sheet">
     <form id="post-form" method="dialog" novalidate>
-      <div class="dialog-head">
-        <h2 id="post-dialog-title">Share your advice</h2>
-        <button type="button" class="icon-btn" data-close aria-label="Close">✕</button>
-      </div>
-      <p class="dialog-sub" id="post-dialog-sub"></p>
-
-      <div class="field-row field-row-3">
-        <label class="field" id="author-year-field">
-          <span>I'm in</span>
-          <select name="authorYear" required></select>
-        </label>
-        <label class="field">
-          <span>Advice for</span>
-          <select name="audienceYear" required></select>
-        </label>
-        <label class="field">
-          <span>Subject</span>
-          <select name="subject" required></select>
-        </label>
+      <div class="sheet-head">
+        <h2 id="post-dialog-title">Add a tip</h2>
+        <button type="button" class="x-btn" data-close aria-label="Close">✕</button>
       </div>
 
-      <fieldset class="field">
-        <legend>What kind of post is it?</legend>
-        <div class="type-picker" id="type-picker"></div>
-      </fieldset>
+      <div class="field" id="author-field">
+        <span class="label">Your year</span>
+        <div class="year-buttons" id="author-buttons"></div>
+      </div>
+
+      <div class="field">
+        <span class="label">For</span>
+        <div class="year-buttons" id="audience-buttons"></div>
+      </div>
 
       <label class="field">
-        <span>Title</span>
-        <input name="title" required minlength="3" maxlength="120" placeholder="e.g. Start past papers by Christmas">
+        <span class="label">Subject</span>
+        <select name="subject" required></select>
       </label>
 
       <label class="field">
-        <span>Your advice</span>
-        <textarea name="body" rows="6" maxlength="4000" placeholder="What do you wish you'd known when you were in their year?"></textarea>
-        <small class="counter"><span data-count>0</span>/4000</small>
+        <span class="label">Your tip</span>
+        <textarea name="body" rows="6" maxlength="4000" placeholder="What do you wish you'd known?"></textarea>
       </label>
 
       <label class="field">
-        <span>Link <em>(optional)</em></span>
-        <input name="link" type="url" maxlength="500" placeholder="https://…">
+        <span class="label">Link <em>optional</em></span>
+        <input name="link" type="url" maxlength="500" placeholder="https://">
       </label>
 
-      <label class="field" id="pinned-field" hidden>
-        <span class="check"><input type="checkbox" name="pinned"> 📌 Pin to top of subject</span>
+      <label class="field check" id="pinned-field" hidden>
+        <input type="checkbox" name="pinned"> <span>📌 Pin to top</span>
       </label>
 
       <label class="field" id="password-field">
-        <span id="password-label">Year password</span>
-        <input name="password" type="password" autocomplete="current-password" placeholder="Ask your form tutor or head of year">
+        <span class="label" id="password-label">Password</span>
+        <input name="password" type="password" autocomplete="current-password">
       </label>
 
-      <p class="form-note" id="post-note" hidden></p>
       <p class="form-error" id="post-error" role="alert" hidden></p>
 
-      <div class="dialog-actions">
-        <button type="button" class="btn btn-ghost" data-close>Cancel</button>
-        <button type="submit" class="btn btn-primary" id="post-submit">Post advice</button>
-      </div>
+      <button type="submit" class="big-btn" id="post-submit">Post</button>
     </form>
   </dialog>
 
-  <!-- Admin login dialog -->
-  <dialog id="admin-dialog" class="dialog dialog-small">
+  <!-- Admin login -->
+  <dialog id="admin-dialog" class="sheet sheet-small">
     <form id="admin-form" method="dialog" novalidate>
-      <div class="dialog-head">
-        <h2>Admin login</h2>
-        <button type="button" class="icon-btn" data-close aria-label="Close">✕</button>
+      <div class="sheet-head">
+        <h2>Admin</h2>
+        <button type="button" class="x-btn" data-close aria-label="Close">✕</button>
       </div>
       <label class="field">
-        <span>Admin password</span>
+        <span class="label">Password</span>
         <input name="password" type="password" autocomplete="current-password" required>
       </label>
       <p class="form-error" id="admin-error" role="alert" hidden></p>
-      <div class="dialog-actions">
-        <button type="button" class="btn btn-ghost" data-close>Cancel</button>
-        <button type="submit" class="btn btn-primary">Log in</button>
-      </div>
+      <button type="submit" class="big-btn">Log in</button>
     </form>
   </dialog>
 

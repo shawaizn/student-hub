@@ -6,7 +6,7 @@ window.SITE_CONFIG = {
   schoolName: "Colton Hills",
   schoolFullName: "Colton Hills Community School",
   motto: "Many Minds, One Mission",
-  siteName: "Student Advice Hub",
+  siteName: "Student Advice",
   tagline: "Advice, tips and resources from older students, for every year group.",
 
   // Colours. accentColor is the exact teal from the school logo; brandColor is a

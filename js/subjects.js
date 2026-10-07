@@ -111,38 +111,27 @@ window.STAGES = {
   },
 };
 
-// The years that have their own advice section.
-// Every year automatically gets a "General" section; "extras" adds more
-// year-specific sections next to it.
+// The years, in order. Each gets a "General" section automatically;
+// "extras" adds more year-specific sections next to it.
 window.YEARS = [
-  { year: 7,  stage: "ks3",    color: "#f59e0b", blurb: "Settling in, making friends, homework and finding your way around",
-    extras: [{ id: "settling-in", name: "Settling In", emoji: "🏫", blurb: "First weeks, finding rooms, clubs, making friends" }] },
-  { year: 8,  stage: "ks3",    color: "#f43f5e", blurb: "Getting organised, clubs, and making the most of KS3" },
-  { year: 9,  stage: "ks3",    color: "#a855f7", blurb: "Choosing your GCSE options and getting ready for Year 10",
-    extras: [{ id: "options", name: "GCSE Options", emoji: "🧭", blurb: "How to choose, what each subject is really like" }] },
-  { year: 10, stage: "gcse",   color: "#3b82f6", blurb: "Starting GCSEs, coursework, and building good revision habits" },
-  { year: 11, stage: "gcse",   color: "#06b6d4", blurb: "Mocks, GCSE exams, and choosing what comes next",
-    extras: [{ id: "exams", name: "Mocks & Exams", emoji: "📝", blurb: "Revision timetables, exam technique, stress" },
-             { id: "post-16", name: "Sixth Form & College", emoji: "🎓", blurb: "Choosing A-levels, BTECs, college or apprenticeships" }] },
-  { year: 12, stage: "post16", color: "#10b981", blurb: "A-levels, BTECs, independent study and UCAS",
-    extras: [{ id: "ucas", name: "UCAS & Next Steps", emoji: "🎓", blurb: "Personal statements, uni choices, apprenticeships" }] },
-  { year: 13, stage: "post16", color: "#6366f1", blurb: "Final exams, applications, results day and what comes next. From last year's Year 13s",
-    extras: [{ id: "applications", name: "Applications & Offers", emoji: "📨", blurb: "UCAS deadlines, interviews, apprenticeships, student finance" },
-             { id: "results-leaving", name: "Results Day & Leaving", emoji: "🎉", blurb: "Clearing, results day, gap years, moving on" }] },
+  { year: 7,  stage: "ks3",    color: "#f59e0b",
+    extras: [{ id: "settling-in", name: "Settling In", emoji: "🏫" }] },
+  { year: 8,  stage: "ks3",    color: "#f43f5e" },
+  { year: 9,  stage: "ks3",    color: "#a855f7",
+    extras: [{ id: "options", name: "GCSE Options", emoji: "🧭" }] },
+  { year: 10, stage: "gcse",   color: "#3b82f6" },
+  { year: 11, stage: "gcse",   color: "#06b6d4",
+    extras: [{ id: "exams", name: "Mocks & Exams", emoji: "📝" },
+             { id: "post-16", name: "Sixth Form & College", emoji: "🎓" }] },
+  { year: 12, stage: "post16", color: "#10b981",
+    extras: [{ id: "ucas", name: "UCAS & Next Steps", emoji: "🎓" }] },
+  { year: 13, stage: "post16", color: "#6366f1",
+    extras: [{ id: "applications", name: "Applications & Offers", emoji: "📨" },
+             { id: "results-leaving", name: "Results Day & Leaving", emoji: "🎉" }] },
 ];
 
 // Years that can post advice (each has its own password).
 // Students post for younger years; Year 13s can also post for next year's Year 13.
 window.POSTING_YEARS = [8, 9, 10, 11, 12, 13];
-// Posts from these years go live straight away; younger years wait for admin approval.
-// (The real rule lives in the database — this is only used for messages on the page.)
-window.TRUSTED_YEARS = [12, 13];
-
-// Types of post. (If you add one here, also add it to _validate_post in supabase/setup.sql.)
-window.POST_TYPES = [
-  { id: "advice",   name: "Advice",        emoji: "💡" },
-  { id: "revision", name: "Revision tip",  emoji: "🧠" },
-  { id: "exam",     name: "Exam advice",   emoji: "📝" },
-  { id: "resource", name: "Resource",      emoji: "📚" },
-  { id: "link",     name: "Useful link",   emoji: "🔗" },
-];
+// Posts from Years 12–13 go live straight away; younger years are checked by the admin first.
+// (That rule lives in the database, in submit_post.)

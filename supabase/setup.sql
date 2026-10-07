@@ -1,5 +1,5 @@
 -- =====================================================================
---  Student Advice Hub — FULL Supabase setup (backup copy)
+--  Student Advice — FULL Supabase setup (backup copy)
 --
 --  The live project is already set up; you do NOT need to run this.
 --  It's here so the whole database can be rebuilt in a brand-new
@@ -17,8 +17,8 @@ create table if not exists public.posts (
   audience_year      integer not null default 12,         -- year the advice is FOR (7–13)
   author_year        integer not null default 13,         -- year of the student who wrote it (8–13)
   subject            text not null,
-  type               text not null,
-  title              text not null,
+  type               text not null default 'advice',       -- unused
+  title              text not null default '',             -- unused (posts are a single tip)
   body               text not null default '',
   link               text,
   author             text,                                -- unused (posts are anonymous)
@@ -113,6 +113,17 @@ as $$
   select coalesce(p_text, '') ~* '\m(f+u+c+k\w*|fck\w*|sh[i1]t\w*|bitch\w*|cunt\w*|wank\w*|twat\w*|prick|pricks|dick|dicks|dickhead\w*|bollock\w*|bastard\w*|slag|slags|slut\w*|whore\w*|piss\w*|arse|arsehole\w*|asshole\w*|nigg\w*|fag|fags|faggot\w*|retard\w*|paki|pakis|spastic\w*|spaz\w*|tosser\w*|knobhead\w*|bellend\w*|nonce\w*|stfu|wtf|kys|kill yourself)\M';
 $$;
 
+-- A tip needs a subject and some text (or a link). 4000 characters is just a spam guard.
+create or replace function public._validate_tip(p_subject text, p_body text, p_link text)
+returns void language plpgsql immutable
+set search_path = public
+as $$
+begin
+  if coalesce(trim(p_subject), '') = '' then raise exception 'Please choose a subject'; end if;
+  if length(trim(coalesce(p_body, ''))) < 3 and coalesce(trim(p_link), '') = '' then raise exception 'Please write your tip'; end if;
+  if length(coalesce(p_body, '')) > 4000 then raise exception 'That tip is too long'; end if;
+end $$;
+
 -- ---------------------------------------------------------------------
 -- Functions the website calls
 -- ---------------------------------------------------------------------
@@ -122,7 +133,8 @@ language sql stable security definer
 set search_path = public, extensions
 as $$ select public._password_ok(p_role, p_password); $$;
 
--- Students: add a post for a younger year (Year 13s can also post for Year 13). Years 12–13 go live; younger years wait for approval.
+-- Students: add a tip for a younger year (Year 13s can also post for Year 13).
+-- A post is just a tip + optional link; p_type and p_title are ignored (kept so the function signature stays the same). Years 12–13 go live; younger years wait for approval.
 create or replace function public.submit_post(
   p_password text, p_author_year integer, p_audience_year integer,
   p_subject text, p_type text, p_title text, p_body text, p_link text
@@ -133,22 +145,22 @@ as $$
 declare new_post public.posts; is_admin boolean; new_status text;
 begin
   if p_author_year is null or p_author_year not between 8 and 13 then raise exception 'Please choose your year'; end if;
-  if p_audience_year is null or p_audience_year not between 7 and 13 then raise exception 'Please choose which year the advice is for'; end if;
+  if p_audience_year is null or p_audience_year not between 7 and 13 then raise exception 'Please choose which year it is for'; end if;
   -- Younger years only, except Year 13s can also leave advice for next year's Year 13
   if p_audience_year >= p_author_year and not (p_author_year = 13 and p_audience_year = 13) then
-    raise exception 'You can only post advice for younger years';
+    raise exception 'You can only post for younger years';
   end if;
   is_admin := public._password_ok('admin', p_password);
   if not (is_admin or public._password_ok('year' || p_author_year, p_password)) then
     raise exception 'Wrong password for Year %', p_author_year;
   end if;
-  perform public._validate_post(p_subject, p_type, p_title, p_body, null);
-  if public._has_bad_words(p_title) or public._has_bad_words(p_body) or public._has_bad_words(p_link) then
-    raise exception 'Please keep it friendly: your post contains words that are not allowed';
+  perform public._validate_tip(p_subject, p_body, p_link);
+  if public._has_bad_words(p_body) or public._has_bad_words(p_link) then
+    raise exception 'Please keep it friendly';
   end if;
   new_status := case when is_admin or p_author_year >= 12 then 'approved' else 'pending' end;
   insert into public.posts (subject, type, title, body, link, author, author_year, audience_year, status)
-  values (trim(p_subject), p_type, trim(p_title), trim(coalesce(p_body, '')),
+  values (trim(p_subject), 'advice', '', trim(coalesce(p_body, '')),
           public._clean_link(p_link), null, p_author_year, p_audience_year, new_status)
   returning * into new_post;
   return new_post;
@@ -240,10 +252,10 @@ as $$
 declare updated public.posts;
 begin
   if not public._password_ok('admin', p_password) then raise exception 'Wrong admin password'; end if;
-  if p_audience_year is null or p_audience_year not between 7 and 13 then raise exception 'Please choose which year the advice is for'; end if;
-  perform public._validate_post(p_subject, p_type, p_title, p_body, null);
+  if p_audience_year is null or p_audience_year not between 7 and 13 then raise exception 'Please choose which year it is for'; end if;
+  perform public._validate_tip(p_subject, p_body, p_link);
   update public.posts set
-    audience_year = p_audience_year, subject = trim(p_subject), type = p_type, title = trim(p_title),
+    audience_year = p_audience_year, subject = trim(p_subject),
     body = trim(coalesce(p_body, '')), link = public._clean_link(p_link), pinned = coalesce(p_pinned, false)
   where id = p_id
   returning * into updated;
@@ -268,6 +280,7 @@ revoke all on function public._password_ok(text, text) from public, anon, authen
 revoke all on function public._clean_link(text) from public, anon, authenticated;
 revoke all on function public._validate_post(text, text, text, text, text) from public, anon, authenticated;
 revoke all on function public._has_bad_words(text) from public, anon, authenticated;
+revoke all on function public._validate_tip(text, text, text) from public, anon, authenticated;
 
 grant execute on function public.check_password(text, text) to anon, authenticated;
 grant execute on function public.submit_post(text, integer, integer, text, text, text, text, text) to anon, authenticated;

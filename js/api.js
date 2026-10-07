@@ -9,7 +9,7 @@
   // Same word filter as the database (_has_bad_words), so people get told straight away.
   const BAD_WORDS = /(^|[^a-z0-9_])(f+u+c+k\w*|fck\w*|sh[i1]t\w*|bitch\w*|cunt\w*|wank\w*|twat\w*|prick|pricks|dick|dicks|dickhead\w*|bollock\w*|bastard\w*|slag|slags|slut\w*|whore\w*|piss\w*|arse|arsehole\w*|asshole\w*|nigg\w*|fag|fags|faggot\w*|retard\w*|paki|pakis|spastic\w*|spaz\w*|tosser\w*|knobhead\w*|bellend\w*|nonce\w*|stfu|wtf|kys|kill yourself)(?![a-z0-9_])/i;
   const hasBadWords = (...texts) => texts.some((t) => BAD_WORDS.test(t || ""));
-  const BAD_WORDS_MSG = "Please keep it friendly: your post contains words that are not allowed";
+  const BAD_WORDS_MSG = "Please keep it friendly";
 
   // ---------- Supabase (REST, no library needed) ----------
   async function sb(path, options = {}) {
@@ -39,7 +39,7 @@
     submitPost: (password, p) =>
       rpc("submit_post", {
         p_password: password, p_author_year: p.authorYear, p_audience_year: p.audienceYear,
-        p_subject: p.subject, p_type: p.type, p_title: p.title, p_body: p.body, p_link: p.link,
+        p_subject: p.subject, p_type: null, p_title: null, p_body: p.body, p_link: p.link,
       }),
     toggleHelpful: (postId, voterId) => rpc("toggle_helpful", { p_post_id: postId, p_voter_id: voterId }),
     reportPost: (postId, voterId) => rpc("report_post", { p_post_id: postId, p_voter_id: voterId }),
@@ -47,8 +47,8 @@
     adminSetStatus: (password, ids, status) => rpc("admin_set_status", { p_password: password, p_ids: ids, p_status: status }),
     adminEditPost: (password, id, p) =>
       rpc("admin_edit_post", {
-        p_password: password, p_id: id, p_audience_year: p.audienceYear, p_subject: p.subject, p_type: p.type,
-        p_title: p.title, p_body: p.body, p_link: p.link, p_pinned: !!p.pinned,
+        p_password: password, p_id: id, p_audience_year: p.audienceYear, p_subject: p.subject, p_type: null,
+        p_title: null, p_body: p.body, p_link: p.link, p_pinned: !!p.pinned,
       }),
     adminDeletePost: (password, id) => rpc("admin_delete_post", { p_password: password, p_id: id }),
   };
@@ -63,31 +63,22 @@
   const checkPw = (role, pw) => pw === (role === "admin" ? "admin" : role); // demo: "year8" … "year13", "admin"
 
   function seed() {
-    const s = (audience_year, author_year, subject, type, title, body, helpful, days, link, extra) => ({
-      id: crypto.randomUUID(), audience_year, author_year, subject, type, title, body, helpful_count: helpful,
-      created_at: ago(days), link: link || null, pinned: false, status: "approved", report_count: 0, ...extra,
+    const s = (audience_year, author_year, subject, body, helpful, days, link, extra) => ({
+      id: crypto.randomUUID(), audience_year, author_year, subject, type: "advice", title: "", body,
+      helpful_count: helpful, created_at: ago(days), link: link || null, pinned: false, status: "approved",
+      report_count: 0, ...extra,
     });
     return [
-      s(7, 8, "settling-in", "advice", "Join a club in your first month",
-        "It's the easiest way to make friends outside your form. There's loads at lunchtime and nobody minds if you just turn up.", 21, 2, null, { pinned: true }),
-      s(7, 10, "general", "advice", "Pack your bag the night before",
-        "Check your timetable every evening. Forgetting your PE kit or planner is the most common way to get a negative point.", 9, 4),
-      s(7, 9, "maths", "revision", "Learn your times tables properly",
-        "It makes literally everything in maths easier for the next five years.", 6, 6),
-      s(9, 11, "options", "advice", "Pick subjects you actually enjoy",
-        "Don't pick something just because your friends are. You'll be doing it for two years.", 17, 3),
-      s(10, 11, "english-lit", "revision", "Make quote flashcards early",
-        "Five quotes per character with the technique on the back. Test yourself on the bus.", 12, 5, "https://www.bbc.co.uk/bitesize"),
-      s(11, 12, "exams", "exam", "Do past papers under timed conditions",
-        "Find them on the exam board website. Mark them yourself and write down every question you got wrong.", 25, 1, "https://www.physicsandmathstutor.com/"),
-      s(12, 13, "general", "advice", "Treat free periods like lessons",
-        "The biggest jump from GCSE is how much free time you get. Lock in 2–3 frees a week for study in the library.", 19, 2),
-      s(12, 13, "maths", "revision", "Do every past paper on Physics & Maths Tutor",
-        "Timed conditions, mark it yourself, and redo the questions you got wrong a week later.", 14, 7, "https://www.physicsandmathstutor.com/"),
-      s(13, 13, "results-leaving", "advice", "Have a plan B before results day",
-        "Know what you'd do through Clearing before the day. Have your UCAS login and phone charged, and don't panic, loads of people end up somewhere great.", 11, 3),
-      s(8, 9, "general", "advice", "Waiting for approval example",
-        "This post is from Year 9, so it waits in the admin approval queue.", 0, 0, null, { status: "pending" }),
+      s(7, 8, "settling-in", "Join a club in your first month. It's the easiest way to make friends outside your form, and nobody minds if you just turn up.", 21, 2, null, { pinned: true }),
+      s(7, 10, "general", "Pack your bag the night before and check your timetable. Forgetting your PE kit or planner is the easiest way to get a negative point.", 9, 4),
+      s(7, 9, "maths", "Learn your times tables properly. It makes everything in maths easier for the next five years.", 6, 6),
+      s(7, 11, "maths", "Don't be scared to ask questions in class. Honestly half the room is confused about the same thing and they'll be glad you asked.\n\nAlso, write your working out neatly from the start — by Year 10 you'll get marks for method even when the answer is wrong, so it's a really good habit to build now. Use the back of your book for rough work and keep the front tidy. Your teacher will notice and so will you when you revise.", 4, 8),
+      s(9, 11, "options", "Pick subjects you actually enjoy, not the ones your friends pick. You'll be doing them for two years.", 17, 3),
+      s(10, 11, "english-lit", "Make quote flashcards early: five quotes per character, technique on the back. Test yourself on the bus.", 12, 5, "https://www.bbc.co.uk/bitesize"),
+      s(11, 12, "exams", "Do past papers under timed conditions and mark them yourself. Write down every question you got wrong and redo them a week later.", 25, 1, "https://www.physicsandmathstutor.com/"),
+      s(12, 13, "general", "Treat free periods like lessons. Lock in 2–3 frees a week for study in the library and future you will thank you in May.", 19, 2),
+      s(13, 13, "results-leaving", "Have a plan B before results day. Know what you'd do through Clearing, keep your UCAS login handy, and don't panic.", 11, 3),
+      s(8, 9, "general", "This one is from Year 9, so it waits for the admin to check it.", 0, 0, null, { status: "pending" }),
     ];
   }
 
@@ -108,13 +99,13 @@
     listPosts: async () => delay(demoPosts().filter((p) => p.status === "approved")),
     checkPassword: async (role, pw) => delay(checkPw(role, pw)),
     submitPost: async (pw, p) => {
-      if (p.audienceYear >= p.authorYear && !(p.authorYear === 13 && p.audienceYear === 13)) throw new Error("You can only post advice for younger years");
+      if (p.audienceYear >= p.authorYear && !(p.authorYear === 13 && p.audienceYear === 13)) throw new Error("You can only post for younger years");
       const isAdmin = checkPw("admin", pw);
       if (!isAdmin && !checkPw("year" + p.authorYear, pw)) throw new Error("Wrong password for Year " + p.authorYear);
-      if (hasBadWords(p.title, p.body, p.link)) throw new Error(BAD_WORDS_MSG);
+      if (hasBadWords(p.body, p.link)) throw new Error(BAD_WORDS_MSG);
       const post = {
         id: crypto.randomUUID(), audience_year: p.audienceYear, author_year: p.authorYear, subject: p.subject,
-        type: p.type, title: p.title.trim(), body: (p.body || "").trim(), link: cleanLink(p.link),
+        type: "advice", title: "", body: (p.body || "").trim(), link: cleanLink(p.link),
         pinned: false, helpful_count: 0, report_count: 0, created_at: new Date().toISOString(),
         status: isAdmin || p.authorYear >= 12 ? "approved" : "pending",
       };
@@ -158,7 +149,7 @@
       const posts = demoPosts();
       const post = posts.find((x) => x.id === id);
       Object.assign(post, {
-        audience_year: p.audienceYear, subject: p.subject, type: p.type, title: p.title.trim(),
+        audience_year: p.audienceYear, subject: p.subject,
         body: (p.body || "").trim(), link: cleanLink(p.link), pinned: !!p.pinned,
       });
       write(DEMO_KEY, posts);
